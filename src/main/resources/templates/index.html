@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>index</title>
+    <script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+    <style>
+        * {
+            margin: 3px;
+            padding: 3px;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <button id="id01">按钮1</button>
+    <button id="id02">按钮2</button>
+    <button id="id03">按钮3</button>
+    <br/>
+    <button id="id04">按钮4</button>
+    <button id="id05">按钮5</button>
+    <button id="id06">按钮6</button>
+    <br/>
+    name<input type="text" value="zhenzhen" name="name" id="id-name"/>
+
+</div>
+<script>
+    $(function () {
+        $('#id01').click(function () {
+            demo1();
+        });
+        $('#id02').click(function () {
+            demo2();
+        });
+
+        $('#id03').click(function () {
+            demo3();
+        });
+
+        $('#id04').click(function () {
+            demo4();
+        });
+
+        $('#id05').click(function () {
+            demo5();
+        });
+
+        $('#id06').click(function () {
+            demo6();
+        });
+    });
+
+    function demo1() {
+        $.ajax({//向服务器发出请求的方法
+            type: "get",
+            contentType: "application/json;charset=UTF-8",
+            url: "/demo1?name=zhangsan&password=123456",//向服务器请求的url
+            data: {},//注意，就算不需要发送数据给后端也要有data
+            success: function (data) {//请求服务器成功后返回页面时页面可以进行处理，data就是后端返回的数据
+                console.log("前端请求后端成功，返回了数据,数据显示用户名为" + data.name);
+                $('#id-name').prop('value', data.name);
+            },
+            error: function (e) {
+                alert("发生未知错误");
+            }
+        });
+    }
+
+    function demo2() {
+        var jsondata = {//前端可以发送数据给后端，json形式
+            "name": "zhansan",
+            "password": "123456"
+        };
+
+        $.ajax({//向服务器发出请求的方法
+            type: "post",
+            contentType: "application/json;charset=UTF-8",
+            url: "/demo2",//向服务器请求的url
+            //后端如果用springMVC的@RequestBody注解的话，则只能Json对象的字符串，不能接收Json对象，
+            // 用 JSON.stringify(data)的方式将对象变成字符串，同时ajax请求也要指定dataType: "json",contentType:"application/json" ，
+            // 这样就能用@RequestBody注解绑定对象或者List集合.
+            data: JSON.stringify(jsondata),
+            success: function (data) {//请求服务器成功后返回页面时页面可以进行处理，data就是后端返回的数据
+                console.log("demo2，返回了数据,数据显示用户名为" + data.name)
+                $('#id-name').prop('value', data.name);
+            },
+            error: function (e) {
+                alert("发生未知错误");
+            }
+        });
+    }
+
+    function demo3() {
+        $.ajax({//向服务器发出请求的方法
+            type: "get",
+            contentType: "application/json;charset=UTF-8",
+            url: "/demo3/zhangsan",//向服务器请求的url
+            data: '',
+            success: function (data) {//请求服务器成功后返回页面时页面可以进行处理，data就是后端返回的数据
+                console.log("demo3，返回了数据,数据显示用户名为" + data.name)
+                $('#id-name').prop('value', data.name);
+            },
+            error: function (e) {
+                alert("发生未知错误");
+            }
+        });
+    }
+
+    function demo4() {
+        $.ajax({//向服务器发出请求的方法
+            type: "post",
+            contentType: "application/json;charset=UTF-8",
+            url: "/demo4/zhangsan",//向服务器请求的url
+            data: '',
+            success: function (data) {//请求服务器成功后返回页面时页面可以进行处理，data就是后端返回的数据
+                console.log("demo4，返回了数据,数据显示用户名为" + data.name)
+                $('#id-name').prop('value', data.name);
+            },
+            error: function (e) {
+                alert("发生未知错误");
+            }
+        });
+    }
+
+    function demo5() {
+        var name = "zhangsan";
+        $.ajax({//向服务器发出请求的方法
+            type: "get",
+            //注意contentType，前端传String，而后端用@RequestParam接收，必须用application/json;charset=UTF-8
+            contentType: "application/json;charset=UTF-8",
+            url: "/demo5?name=" + name ,//向服务器请求的url
+            data: {},
+            success: function (data) {//请求服务器成功后返回页面时页面可以进行处理，data就是后端返回的数据
+                console.log("demo5，返回了数据,数据显示用户名为" + data.name)
+                $('#id-name').prop('value', data.name);
+            },
+            error: function (e) {
+                alert("发生未知错误");
+            }
+        });
+    }
+
+    function demo6() {
+        var person = {//前端可以发送数据给后端，json形式
+            "name": "zhansan",
+            "password": "123456"
+        };
+        $.ajax({//向服务器发出请求的方法
+            type: "post",
+            //注意contentType，前端传对象，而后端用@RequestParam接收，必须用application/x-www-form-urlencoded
+            contentType: "application/x-www-form-urlencoded",
+            url: "/demo6",//向服务器请求的url
+            data: person,
+            success: function (data) {//请求服务器成功后返回页面时页面可以进行处理，data就是后端返回的数据
+                console.log("demo6，返回了数据,数据显示用户名为" + data.name)
+                $('#id-name').prop('value', data.name);
+            },
+            error: function (e) {
+                alert("发生未知错误");
+            }
+        });
+    }
+</script>
+</body>
+</html>
